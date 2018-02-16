@@ -1,27 +1,22 @@
 # Image de base
 FROM ubuntu:latest
 
-# Installation des packages Python avec apt-get
+# Installation des packages Java avec apt-get
 RUN apt-get update && apt-get install --no-install-recommends -y \
     ca-certificates \
     curl \
     vim \
-    python-pip \
-    python-setuptools \
-    python3 \
-    python3-pip \
-    python3-setuptools \
     git \
-&& pip install --upgrade pip \
-&& pip install wheel \
-&& pip install nose nosexcover pylint setuptools-lint pycodestyle tox mock \
-&& pip3 install --upgrade pip \
-&& pip3 install wheel \
-&& pip3 install nose nosexcover pylint setuptools-lint pycodestyle tox mock \
-&& rm -rf /var/lib/apt/lists/*
+    openjdk-8-jdk \
+    maven \
+  && rm -rf /var/lib/apt/lists/*
 
 # Changement du repertoire courant
-WORKDIR /devpython
+WORKDIR /devjava
+
+# Git config
+#RUN [[ -d /home/user ]] || mkdir /home/user
+#RUN printf '%s\n\t%s\n\t%s\n' '[user]' 'email = ci@dummyuser.ci.inria.fr' 'name = CI' >> /home/user/.gitconfig
 
 RUN gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4
 RUN curl -o /usr/local/bin/gosu -SL "https://github.com/tianon/gosu/releases/download/1.4/gosu-$(dpkg --print-architecture)" \
